@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # Import Modules
 try:
-    import os,sys,re,time,random,hashlib,binascii,argparse,progressbar,readline,urllib.request,gzip,tqdm
+    import os,sys,re,time,random,hashlib,binascii,argparse,progressbar,readline,urllib.request,gzip
     from passlib.hash import mysql323,mysql41,mssql2000,mssql2005,nthash,lmhash
 except Exception as F:
     exit("\x1b[1;31m   [!] \x1b[1;32m%s\x1b[0;39m"%(F))
@@ -227,17 +227,16 @@ if __name__ == "__main__":
         sys.exit()
     def update():
         print(B+"   [!] "+A+"REMOVEING OLD WORLDLIST "+E+"...")
-        os.remove("wordlist.txt")
+        os.remove("wordlist.txt.gz")
         print(B+"   [!] "+A+"DONE "+E+"...")
         print(B+"   [!] "+A+"DOWNLOADING THE WORDLIST "+E+"...\x1b[1;39m")
         url = "https://raw.githubusercontent.com/MyWay404/Hash/main/wordlist.txt.gz"
-        chunk_size = 1024
         download = urllib.request.urlopen(url)
-        total_size = int(download.length)
-        with open("wordlist.txt","wb") as F:
-            for data in tqdm.tqdm(iterable = download.iter_content(chunk_size = chunk_size),total = total_size/chunk_size,unit = "KB"):
+        with open("wordlist.txt.gz","wb") as F:
+            for data in download:
                 F.write(data)
-        print(B+"   [!] "+A+"DONE "+E+"^_^")
+        F.close()
+        print(B+"   [!] "+A+"DONE !!!"+E)
         sys.exit()
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,prog="Decrypt",description="Decrypt. A simple tool for decrypt hash.\nCreated on Python 3.8.0.",usage="./decrypt.py [-h] [-V] [-i] [-u]")
     parser.add_argument("-V","--version",action="store_true",dest="version",help="show version info and exit")
